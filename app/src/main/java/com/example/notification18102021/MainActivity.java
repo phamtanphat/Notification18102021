@@ -3,7 +3,12 @@ package com.example.notification18102021;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.ContentResolver;
+import android.media.AudioAttributes;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -30,7 +35,26 @@ public class MainActivity extends AppCompatActivity {
 
                 NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                    NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID,"New_Version",NotificationManager.IMPORTANCE_HIGH);
+                    Uri soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+ getApplicationContext().getPackageName() + "/" + R.raw.musicdata);
+                    AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                            .build();
+                    notificationChannel.setSound(soundUri,audioAttributes);
+                    notificationManager.createNotificationChannel(notificationChannel);
+                }
+
                 notificationManager.notify(1 , notificationCompat.build());
+            }
+        });
+
+        mBtnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                notificationManager.cancel(1);
             }
         });
     }
