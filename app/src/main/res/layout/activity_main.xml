@@ -8,15 +8,9 @@
     tools:context=".MainActivity">
 
    <Button
-       android:id="@+id/buttonOpenNotification"
-       android:text="Open notification"
+       android:id="@+id/buttonNavigateScreen2"
+       android:text="Navigate Screen 2"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"/>
-    <Button
-        android:layout_below="@id/buttonOpenNotification"
-        android:id="@+id/buttonCloseNotification"
-        android:text="Close notification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

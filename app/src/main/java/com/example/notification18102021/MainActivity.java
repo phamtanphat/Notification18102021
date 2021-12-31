@@ -17,54 +17,20 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button mBtnOpen, mBtnClose;
-    String CHANNEL_ID = "mychannel";
+    Button mBtnNavigateScreen2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mBtnClose = findViewById(R.id.buttonCloseNotification);
-        mBtnOpen = findViewById(R.id.buttonOpenNotification);
+        mBtnNavigateScreen2 = findViewById(R.id.buttonNavigateScreen2);
 
-        mBtnOpen.setOnClickListener(new View.OnClickListener() {
+        mBtnNavigateScreen2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-                PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, 0);
-
-                NotificationCompat.Builder notificationCompat = new NotificationCompat.Builder(MainActivity.this,CHANNEL_ID);
-                notificationCompat.setSmallIcon(R.mipmap.ic_launcher);
-                notificationCompat.setContentTitle("Thông báo app có phiên bản mới");
-                notificationCompat.setContentText("Phiên bản 2.5 vừa được cập nhật");
-                notificationCompat.setShowWhen(true);
-                notificationCompat.setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+ "://" + getPackageName()+"/"+R.raw.musicdata));
-                notificationCompat.setContentIntent(pendingIntent);
-
-                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                    NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID,"New_Version",NotificationManager.IMPORTANCE_DEFAULT);
-//                    Uri soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+ getPackageName() + "/" + R.raw.musicdata);
-//                    AudioAttributes audioAttributes = new AudioAttributes.Builder()
-//                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-//                            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-//                            .build();
-//                    notificationChannel.setSound(soundUri,audioAttributes);
-                    notificationManager.createNotificationChannel(notificationChannel);
-                }
-
-                notificationManager.notify(1 , notificationCompat.build());
+                Intent intent = new Intent(MainActivity.this,MainActivity2.class);
+                startActivity(intent);
             }
         });
 
-        mBtnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                notificationManager.cancel(1);
-            }
-        });
     }
 }
