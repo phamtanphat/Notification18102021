@@ -5,7 +5,9 @@ import androidx.core.app.NotificationCompat;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
@@ -27,23 +29,29 @@ public class MainActivity extends AppCompatActivity {
         mBtnOpen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, 0);
+
                 NotificationCompat.Builder notificationCompat = new NotificationCompat.Builder(MainActivity.this,CHANNEL_ID);
                 notificationCompat.setSmallIcon(R.mipmap.ic_launcher);
                 notificationCompat.setContentTitle("Thông báo app có phiên bản mới");
                 notificationCompat.setContentText("Phiên bản 2.5 vừa được cập nhật");
                 notificationCompat.setShowWhen(true);
                 notificationCompat.setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+ "://" + getPackageName()+"/"+R.raw.musicdata));
+                notificationCompat.setContentIntent(pendingIntent);
 
                 NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                    NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID,"New_Version",NotificationManager.IMPORTANCE_HIGH);
-                    Uri soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+ getPackageName() + "/" + R.raw.musicdata);
-                    AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                            .build();
-                    notificationChannel.setSound(soundUri,audioAttributes);
+                    NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID,"New_Version",NotificationManager.IMPORTANCE_DEFAULT);
+//                    Uri soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+ getPackageName() + "/" + R.raw.musicdata);
+//                    AudioAttributes audioAttributes = new AudioAttributes.Builder()
+//                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+//                            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+//                            .build();
+//                    notificationChannel.setSound(soundUri,audioAttributes);
                     notificationManager.createNotificationChannel(notificationChannel);
                 }
 
