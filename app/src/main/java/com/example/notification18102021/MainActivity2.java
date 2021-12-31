@@ -6,6 +6,7 @@ import androidx.core.app.NotificationCompat;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
@@ -29,10 +30,11 @@ public class MainActivity2 extends AppCompatActivity {
         mBtnOpen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity2.this,MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                Intent intent = new Intent(MainActivity2.this,MainActivity2.class);
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(MainActivity2.this);
+                stackBuilder.addNextIntentWithParentStack(intent);
 
-                PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity2.this, 0, intent, 0);
+                PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
                 NotificationCompat.Builder notificationCompat = new NotificationCompat.Builder(MainActivity2.this,CHANNEL_ID);
                 notificationCompat.setSmallIcon(R.mipmap.ic_launcher);
@@ -40,7 +42,7 @@ public class MainActivity2 extends AppCompatActivity {
                 notificationCompat.setContentText("Phiên bản 2.5 vừa được cập nhật");
                 notificationCompat.setShowWhen(true);
                 notificationCompat.setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+ "://" + getPackageName()+"/"+R.raw.musicdata));
-//                notificationCompat.setContentIntent(pendingIntent);
+                notificationCompat.setContentIntent(pendingIntent);
 //                notificationCompat.addAction(R.drawable.ic_launcher_background,"Open App" ,pendingIntent);
 
                 NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
