@@ -10,7 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Notification18102021">
         <activity
-            android:parentActivityName=".MainActivity"
             android:name=".MainActivity2"
             android:exported="true" />
         <activity
